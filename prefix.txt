@@ -1,0 +1,50 @@
+King
+Queen
+Prince
+Princess
+Pope
+Duke
+Archduke
+Duchess
+Count
+Private
+Corporal
+Sergeant
+Sergeant Major
+Warrant Officer
+Captain
+Major
+Lieutenant Colonel
+Colonel
+General
+Admiral
+Marshal
+Officer
+Sir
+Sire
+Madam
+Mistress
+Priest
+Priestess
+Abbot
+Abbess
+Cardinal
+Bishop
+Lady
+Lord
+Secretary
+Mister
+Miss
+Mr.
+Mrs.
+Ms.
+Doctor
+Dr.
+Minister
+Prime Minister
+Congressman
+Senator
+Representative
+Chief
+Chairman
+Chairwoman

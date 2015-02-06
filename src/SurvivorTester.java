@@ -6,7 +6,7 @@ public class SurvivorTester {
 
 	public static void main(String[] args) {
 
-		Survivor survivor = new Survivor();
+		SurvivorI survivor = new Survivor();
 
 		// survivor.openFile(new File("names.txt"));
 		try {
@@ -16,7 +16,7 @@ public class SurvivorTester {
 			e.printStackTrace();
 		}
 
-		System.out.println(survivor.findSurvivor(1));
+		System.out.println(survivor.findSurvivor(6) + " survived.");
 	}
 
 }
