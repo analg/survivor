@@ -1,6 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class SurvivorTester {
 
@@ -8,15 +6,10 @@ public class SurvivorTester {
 
 		SurvivorI survivor = new Survivor();
 
-		// survivor.openFile(new File("names.txt"));
-		try {
-			survivor.readFile(new Scanner(new File("names.txt")));
-		}
-		catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		survivor.openFile(new File("names.txt"));
+		survivor.readFile();
 
-		System.out.println(survivor.findSurvivor(6) + " survived.");
+		System.out.println(survivor.findSurvivor(1) + " survived.");
 	}
 
 }

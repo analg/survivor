@@ -1,5 +1,4 @@
 import java.io.File;
-import java.util.Scanner;
 
 public interface SurvivorI {
 
@@ -11,10 +10,9 @@ public interface SurvivorI {
 	/**
 	 * Read file and create a linked list
 	 *
-	 * @param sc read name-lines from this text file
 	 * @return first node in list that was created
 	 */
-	public void readFile(Scanner sc);
+	public void readFile();
 
 	/**
 	 * @param in a name in '(Title) (First) Last (Middle) (Suffix)' format

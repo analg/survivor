@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Survivor implements SurvivorI {
 
-	protected File file;
+	protected Scanner nameDescriptor;
 	protected MyLinkedList<String> list;
 
 	public static final List<String> suffices = new ArrayList<String>();
@@ -36,21 +36,37 @@ public class Survivor implements SurvivorI {
 
 	}
 
+	/**
+	 * Create new Survivor instance.
+	 */
 	public Survivor() {
 		list = new MyLinkedList<String>();
 		list.restrictIterator(false);
 	}
 
+	/**
+	 * Open names list file.
+	 *
+	 * @param myFile to open
+	 */
 	@Override
 	public void openFile(File myFile) {
-		file = myFile;
+		try {
+			nameDescriptor = new Scanner(myFile);
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * Read names from list file.
+	 */
 	@Override
-	public void readFile(Scanner sc) {
+	public void readFile() {
 		ArrayList<String> sorted = new ArrayList<String>();
-		while (sc.hasNextLine()) {
-			sorted.add(formatName(sc.nextLine()));
+		while (nameDescriptor.hasNextLine()) {
+			sorted.add(formatName(nameDescriptor.nextLine()));
 		}
 		Collections.sort(sorted);
 		for (String s: sorted) {
@@ -59,11 +75,18 @@ public class Survivor implements SurvivorI {
 		list.loop();
 	}
 
+	/**
+	 * Parse names into regular format.
+	 *
+	 * @param in to parse
+	 */
 	@Override
 	public String formatName(String in) {
+		// normalize whitespace
 		in = in.trim().replaceAll("\\s+", " ");
 		String pre = null;
 		String suf = null;
+		// cut prefices and suffices out if they exist
 		for (String s: titles) {
 			if (in.startsWith(s) && (pre == null || pre.length() < s.length())) {
 				pre = s;
@@ -81,6 +104,7 @@ public class Survivor implements SurvivorI {
 			in = in.substring(0, in.length() - suf.length());
 		}
 		in = in.trim();
+		// regex capture first, middle, and last name groups
 		Pattern pattern = Pattern.compile("(?:([A-Za-z-]+\\.?)\\s?)(?:([A-Za-z-]+\\.?)\\s)?(?:([A-Za-z-]+\\.?))?");
 		Matcher matcher = pattern.matcher(in);
 		if (matcher.find()) {
@@ -95,9 +119,11 @@ public class Survivor implements SurvivorI {
 			boolean middledefined = middle != null;
 			boolean sufdefined = suf != null;
 
+			/*
 			if (predefined) {
 				name += pre + ' ';
 			}
+			*/
 
 			if (lastdefined) {
 				name += last.substring(0, 1).toUpperCase() + last.substring(1);
@@ -128,6 +154,9 @@ public class Survivor implements SurvivorI {
 		}
 	}
 
+	/**
+	 * Output list of names to stdout.
+	 */
 	@Override
 	public void printList() {
 		String output = "";
@@ -137,15 +166,24 @@ public class Survivor implements SurvivorI {
 		System.out.println(output);
 	}
 
+	/**
+	 * Find survivor from selection seed.
+	 *
+	 * @param n death interval
+	 *
+	 * @return name of survivor
+	 */
 	@Override
 	public String findSurvivor(int n) {
 		int i = 0;
 		Random r = new Random();
 		MyLinkedList<String> transientList = new MyLinkedList<String>();
+		// copy list to temporary list
 		list.restrictIterator(true);
 		for (String s: list) {
 			transientList.append(s);
 		}
+		// loop and cyclify list
 		transientList.loop();
 		transientList.restrictIterator(false);
 		Iterator<String> iterator = transientList.iterator();
@@ -155,11 +193,14 @@ public class Survivor implements SurvivorI {
 			}
 			String s = iterator.next();
 			if (++i == n) {
+				// remove and announce death
 				iterator.remove();
 				System.out.println(s + " " + deathMethods.get(r.nextInt(deathMethods.size())));
 				i = 0;
 			}
 		}
+
+		// head of list contains last value
 		return transientList.getHead().getValue();
 	}
 }
